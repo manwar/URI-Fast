@@ -1,3 +1,7 @@
+package URI::Fast::IRI;
+our @ISA = qw(URI::Fast);
+1;
+
 package URI::Fast;
 # ABSTRACT: A fast(er) URI parser
 
@@ -24,12 +28,6 @@ use overload '""' => sub{ $_[0]->to_string };
 sub uri ($) {
   my $self = URI::Fast->new($_[0]);
   $self->set_scheme('file') unless $self->get_scheme;
-  $self;
-}
-
-sub iri ($) {
-  my $self = uri $_[0];
-  $self->set_is_iri(1);
   $self;
 }
 
@@ -166,7 +164,17 @@ parameter.
 
 =head2 uri
 
-Accepts a URI string, minimally parses it, and returns a L<URI::Fast> object.
+Accepts a URI string, minimally parses it, and returns a C<URI::Fast> object.
+
+=head2 iri
+
+Similar to L</uri>, but returns a C<URI::Fast::IRI> object. A C<URI::Fast::IRI>
+differs from a C<URI::Fast> in that UTF-8 characters are permitted and will not
+be percent-encoded when modified.
+
+=head2 uri_split
+
+Behaves (hopefully) identically to L<URI::Split>, but roughly twice as fast.
 
 =head1 ATTRIBUTES
 
@@ -1137,6 +1145,12 @@ SV* new(const char* class, SV* uri_str) {
   uri_scan(uri, src, len);
 
   return obj_ref;
+}
+
+SV* iri(SV* uri_str) {
+  SV* obj = new("URI::Fast::IRI", uri_str);
+  URI_MEMBER(obj, is_iri) = 1;
+  return obj;
 }
 
 void DESTROY(SV* uri_obj) {
