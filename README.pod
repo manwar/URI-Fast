@@ -151,6 +151,14 @@ separate key/value pairs.
 
 The fragment section of the URI, excluding the leading C<#>.
 
+=head2 is_iri
+
+When created with the L</iri> constructor, this field is set to true. A
+C<URI::Fast> instance may set this to true with C<$uri-\>set_is_iri(1)>,
+causing the URI to be treated as an IRI in all future operations. The only
+difference between this and using the L</iri> constructor is that L</iri> will
+bless the object as a C<URI::Fast::IRI>.
+
 =head1 ENCODING
 
 C<URI::Fast> tries to do the right thing in most cases with regard to reserved
