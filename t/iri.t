@@ -18,9 +18,11 @@ is $iri->path, $path, 'path';
 is $iri->frag, $frag, 'frag';
 
 is $iri->query_hash, hash{ field $foo => array{ item $bar; end; }; end; }, 'query_hash';
+is [sort $iri->query_keys], array{ item $foo; end; }, 'query_keys';
 
 is $iri->param($foo), $bar, 'get param';
 is $iri->param($baz, $bat), $bat, 'set param';
 is $iri->param($baz), $bat, 'get param';
+is [sort $iri->query_keys], array{ item $baz; item $foo; end; }, 'query_keys';
 
 done_testing;

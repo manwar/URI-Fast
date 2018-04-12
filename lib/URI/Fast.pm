@@ -823,7 +823,7 @@ SV* get_query_keys(SV* uri) {
     idx = strcspn(src, "=");
     char tmp[idx + 1];
     vlen = uri_decode(src, idx, tmp);
-    hv_store(out, tmp, vlen, &PL_sv_undef, 0);
+    hv_store(out, tmp, -vlen, &PL_sv_undef, 0);
   }
 
   return newRV_noinc((SV*) out);
