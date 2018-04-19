@@ -50,6 +50,8 @@ foreach my $attr (qw(scheme usr pwd host port frag)) {
   };
 }
 
+sub is_iri { @_ > 1 ? $_[0]->set_is_iri($_[1]) : $_[0]->get_is_iri }
+
 sub auth {
   my ($self, $val) = @_;
 
@@ -778,6 +780,7 @@ const char* get_usr(SV* uri_obj)    { return URI_MEMBER(uri_obj, usr);    }
 const char* get_pwd(SV* uri_obj)    { return URI_MEMBER(uri_obj, pwd);    }
 const char* get_host(SV* uri_obj)   { return URI_MEMBER(uri_obj, host);   }
 const char* get_port(SV* uri_obj)   { return URI_MEMBER(uri_obj, port);   }
+int get_is_iri(SV* uri_obj) { return URI_MEMBER(uri_obj, is_iri);   }
 
 SV* get_auth(SV* uri_obj) {
   uri_t* uri = URI(uri_obj);

@@ -14,6 +14,7 @@ my @uris = (
 
 subtest 'simple' => sub{
   ok my $uri = uri($uris[1]), 'ctor';
+  ok !$uri->is_iri, 'is_iri';
   is $uri->scheme, 'http', 'scheme';
   is $uri->auth, 'www.test.com', 'auth';
   is $uri->path, '', 'path';

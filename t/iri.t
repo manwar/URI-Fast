@@ -14,6 +14,7 @@ my $iri_str = "http://$host$path?$foo=$bar#$frag";
 
 ok my $iri = iri($iri_str), 'ctor';
 ok $iri->isa('URI::Fast::IRI'), 'isa';
+ok $iri->is_iri, 'is_iri';
 
 subtest 'getters' => sub{
   is $iri->host, $host, 'host';
