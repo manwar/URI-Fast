@@ -130,7 +130,7 @@ test 'Stringification', 500_000, {
   'URI::Fast' => sub{ my $uri = uri $urls[3]; my $str = "$uri" },
 };
 
-test 'uri_split', 500_000, {
+test 'uri_split', 1_000_000, {
   'URI::Split' => sub{ my @uri = URI::Split::uri_split($urls[3]) },
   'URI::Split' => sub{ my @uri = URI::Split::uri_split($urls[3]) },
   'URI::Fast' => sub{ my @uri = uri_split($urls[3]) },
