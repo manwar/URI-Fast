@@ -1,10 +1,12 @@
 #!perl
 
+use utf8;
 use Benchmark qw(:all);
 use URI::Encode::XS qw(uri_encode_utf8 uri_decode_utf8);
-use URI::Fast qw(uri uri_split);
+use URI::Fast qw(uri uri_split iri);
 use URI::Split qw();
 use URI;
+use IRI;
 
 my $POD;
 
@@ -34,6 +36,7 @@ my @urls = (
   'http://www.test.com',
   'https://test.com/some/path?aaaa=bbbb&cccc=dddd&eeee=ffff',
   'https://user:pwd@192.168.0.1:8000/foo/bar?baz=bat&slack=fnord&asdf=the+quick%20brown+fox+%26+hound#foofrag',
+  'https://www.çæ∂î∫∫å.com/ƒø∫∂é®?ƒøø=ßå®#ƒ®å©',
 );
 
 my $encode_input = "Ῥόδος¢€" . q{! * ' ( ) ; : @ & = + $ , / ? # [ ] %} x 10;
@@ -141,6 +144,26 @@ test 'Encode', 2_000_000, {
 test 'Decode', 2_000_000, {
   'URI::Encode::XS' => sub{ uri_decode_utf8($decode_input) },
   'URI::Fast' => sub{ URI::Fast::decode($decode_input) },
+};
+
+test 'IRI - ctor', 500_000, {
+  'IRI'       => sub{ my $iri = IRI->new($urls[4]) },
+  'URI::Fast' => sub{ my $iri = iri $urls[4] },
+};
+
+test 'IRI - query_hash', 500_000, {
+  'IRI' => sub{ my $iri = IRI->new($urls[4]); my %q = $iri->query_form },
+  'URI::Fast' => sub{ my $iri = iri $urls[4]; my $q = $iri->query_hash },
+};
+
+test 'IRI - set param', 500_000, {
+  'IRI' => sub{ my $iri = IRI->new($urls[4]); $iri->query_form('ßåΩ' => 'ßå†') },
+  'URI::Fast' => sub{ my $iri = iri $urls[4]; $iri->param('ßåΩ', 'ßå†') },
+};
+
+test 'IRI - update path', 500_000, {
+  'IRI' => sub{ my $iri = IRI->new($urls[4]); $iri->path('/Ῥόδος¢€') },
+  'URI::Fast' => sub{ my $iri = iri $urls[4]; $iri->path('/Ῥόδος¢€') },
 };
 
 close $POD;
