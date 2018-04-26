@@ -50,8 +50,6 @@ foreach my $attr (qw(scheme usr pwd host port frag)) {
   };
 }
 
-sub is_iri { @_ > 1 ? $_[0]->set_is_iri($_[1]) : $_[0]->get_is_iri }
-
 sub auth {
   my ($self, $val) = @_;
 
@@ -275,14 +273,6 @@ separate key/value pairs.
 =head2 frag
 
 The fragment section of the URI, excluding the leading C<#>.
-
-=head2 is_iri
-
-When created with the L</iri> constructor, this field is set to true. A
-C<URI::Fast> instance may set this to true with C<$uri-\>set_is_iri(1)>,
-causing the URI to be treated as an IRI in all future operations. The only
-difference between this and using the L</iri> constructor is that L</iri> will
-bless the object as a C<URI::Fast::IRI>.
 
 =head1 ENCODING
 
@@ -780,7 +770,6 @@ const char* get_usr(SV* uri_obj)    { return URI_MEMBER(uri_obj, usr);    }
 const char* get_pwd(SV* uri_obj)    { return URI_MEMBER(uri_obj, pwd);    }
 const char* get_host(SV* uri_obj)   { return URI_MEMBER(uri_obj, host);   }
 const char* get_port(SV* uri_obj)   { return URI_MEMBER(uri_obj, port);   }
-int get_is_iri(SV* uri_obj) { return URI_MEMBER(uri_obj, is_iri);   }
 
 SV* get_auth(SV* uri_obj) {
   uri_t* uri = URI(uri_obj);
@@ -948,11 +937,6 @@ SV* get_param(SV* uri, SV* sv_key) {
 /*
  * Setters
  */
-int set_is_iri(SV* uri_obj, int value) {
-  URI_MEMBER(uri_obj, is_iri) = value;
-  return value;
-}
-
 const char* set_scheme(SV* uri_obj, const char* value) {
   URI_ENCODE_MEMBER(uri_obj, scheme, value, "", 0);
   return URI_MEMBER(uri_obj, scheme);
