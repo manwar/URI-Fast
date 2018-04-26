@@ -25,9 +25,11 @@ print $POD q{# PODNAME: URI::Fast::Benchmarks
 Various operations comparing L<URI::Fast> against L<URI>'s performance. The
 script to recreate is included in the C<bench> folder of the distribution.
 
-Tests were performed on my development machine, a 2015 MacBook Pro (2.7 GHz
-Intel Core i5, 8GB 1867 MHz DDR3 RAM) using Perl 5.24 installed using
-L<perlbrew|https://perlbrew.pl>.
+Tests were performed on a 2015 Chromebook Pixel running Gallium linux using
+Perl 5.26 installed with L<perlbrew|https://perlbrew.pl>. Earlier testing was
+done with a similarly equipped MacBook Pro. It is interesting to note that
+URI::Fast's rate is roughly the same, but URI's rate increased significantly
+over Perl compiled for MacOS.
 
 };
 
